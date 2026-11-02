@@ -2,7 +2,7 @@
 
 **Joule Work:** [https://747391938.eu10.sapdas.cloud.sap/new/conversations](https://747391938.eu10.sapdas.cloud.sap/new/conversations)
 
-Log in with your assigned user ID. IDs run from `XP267-201` to `XP267-270`. If your number is 1, your user ID is `XP267-201`; if it is 12, use `XP267-212`.
+Log in with `XP267-201`.
 
 In this exercise you ground **Joule** on the knowledge graph you built in the SAP BDC
 Ontology Manager, which sits on top of the golden records from the earlier exercises. You import a
