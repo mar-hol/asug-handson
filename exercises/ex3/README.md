@@ -14,115 +14,7 @@ questions in a normal conversation.
 > credentials to paste and no code to edit. You import the folder, enable it, and start asking
 > questions.
 
-## Prerequisites
-
-- The SAP BDC Ontology Manager golden-record ontology published for your lab tenant.
-- Access to **Joule Work** for your lab tenant (browser only — nothing is installed on your
-  laptop).
-- The `ontology-manager-skill/` folder from this directory, available on the machine you are
-  browsing from (clone the repo or download the folder).
-
-## Exercise 3.1 Import and enable the skill
-
-When you finish these steps, the `ontology-manager-skill` is active in your Joule Work account
-and grounded on your tenant's Ontology Manager.
-
-### Step 1 — Look at the skill before you import it
-
-Before importing, open the `ontology-manager-skill/` folder in this exercise and skim its three
-files — the whole skill is small enough to read in a couple of minutes, and knowing what's inside
-makes the later steps make sense.
-
-```
-ontology-manager-skill/
-  SKILL.md                   # the instructions Joule follows (grounding rules + tool reference)
-  .sap-connectivity.json     # declares the BTP destination the skill reaches through
-  scripts/
-    ask_ontology_manager.py           # thin client that calls the Ontology Manager MCP tools
-```
-
-- **`SKILL.md`** is the heart of the skill — plain-English instructions that tell Joule to pin
-  the ontology, cache its schema, write SPARQL from that schema, and never answer from memory. It
-  also lists the MCP tools the skill can call. Read the top of it to see the grounding contract.
-- **`.sap-connectivity.json`** declares a single connector pointing at a BTP **destination**
-  (`ONTOLOGY_MANAGER_TECHED_HANDSON_1`). This is the one line that wires the skill to your tenant's
-  Ontology Manager — and the reason you never paste a credential.
-- **`scripts/ask_ontology_manager.py`** is a small helper that posts a request to the Ontology Manager and
-  returns the result. You don't edit it; `SKILL.md` tells Joule when to run it.
-
-> You don't change anything in these files. This step is just so the skill isn't a black box
-> before you turn it on. [What the skill does](#what-the-skill-does-for-the-curious) at the end
-> unpacks the grounding rules in more detail.
-
----
-
-### Step 2 — Open Explore Skills
-
-Open **Joule** in your browser and sign in: [https://747391938.eu10.sapdas.cloud.sap/](https://747391938.eu10.sapdas.cloud.sap/)
-
-> On a brand-new account, Joule Work opens a short onboarding wizard (a welcome splash, then a
-> few feature-tour cards). It's not part of this exercise — click **Skip** (or step through it
-> with **Next**) to reach the main Joule Work screen.
-
-In the bottom-left of the navigation bar, click your **user ID** (your name / initials). In the
-popup menu, click **Explore Skills**.
-
-![Joule Work user menu with Explore Skills highlighted](images/03_01_0000.png)
-
----
-
-### Step 3 — Open the Import dialog
-
-The **Explore Skills** gallery lists every skill available to you — the ones **Published by SAP**
-(Ariba, Word, PDF, PowerPoint, …) and any **Custom** skills your account has imported.
-
-In the top-right, click **Import**.
-
-![The Explore Skills gallery with the Import button](images/03_01_0005.png)
-
----
-
-### Step 4 — Choose the skill folder
-
-In the **Import Skill** dialog, click **Choose Folder** and select the
-`ontology-manager-skill/` folder from this exercise (it contains `SKILL.md`,
-`.sap-connectivity.json`, and a `scripts/` folder). The **Skill Name** and **Skill Description**
-fill in automatically from the folder's `SKILL.md`. Then click **Import**.
-
-> The notice in the dialog — *"custom skills execute in a sandbox environment without external
-> network connectivity"* — is expected. This skill does **not** make its own outbound call: it
-> reaches the Ontology Manager through a **BTP destination** that the Joule runtime resolves and
-> proxies for it, so it works inside the sandbox without any network egress of its own. That is
-> exactly why there are no credentials to configure.
-
-![The Import Skill dialog with the name and description pre-filled from SKILL.md](images/03_01_0010.png)
-
----
-
-### Step 5 — Enable the skill
-
-Back in the gallery (the **All Skills** tab), find the imported **ontology-manager-skill** card
-(marked **Custom**). Click the **toggle** at the top-right of that card to switch it **on** — it's
-the small switch next to the card's `•••` menu, and it starts greyed out / off. Once it shows as
-active, Joule will reach for it whenever you ask about ontologies, the knowledge graph, or
-customer-churn and delivery data.
-
-![The ontology-manager-skill card with its enable toggle highlighted](images/03_01_0015.png)
-
-> No connection details to fill in. The skill carries its own `.sap-connectivity.json`, and the
-> Joule runtime binds it to your tenant's Ontology Manager destination for you. If the skill is
-> enabled but answers fail, it is almost always because the destination isn't provisioned for your
-> tenant — ask the lab host.
-
----
-
-## Exercise 3.2 Ask the skill churn & delivery questions
-
-Now test the skill in a conversation. These questions use the **`Customer_Churn_Ontology_<your station number> `** —
-the governed knowledge graph that links your CRM accounts (churn risk, renewals, NPS) to your
-real SAP delivery performance (OTIF), the churn ↔ delivery link you proved in Exercise 1.
-
-### Step 6 — Start an Agentic Thinking conversation
+### Step 1 — Start an Agentic Thinking conversation
 
 Click **New** to open a conversation. Once it opens, rename it to your user ID (for example, `XP267-250` if you got card 50) — click the conversation title at the top and type your ID. This makes it easy to find your session later.. **Before you type anything**, click the **`+`** at the bottom-left of the chat box and choose **Agentic Thinking** (*"Empowers Joule to take initiative
 autonomously"*). Custom skills only run in an **Agentic Thinking** conversation — in a normal
@@ -136,7 +28,7 @@ my current configuration,"* answering from general knowledge instead.
 
 ---
 
-### Step 7 — Connect the skill to the ontology
+### Step 2 — Connect the skill to the ontology
 
 Start with a short message that points the skill at the ontology:
 
@@ -154,7 +46,7 @@ then waits for your question.
 
 ---
 
-### Step 8 — Check that it reads from the governed data
+### Step 3 — Check that it reads from the governed data
 
 Confirm Joule looks up the ontology before it answers. Paste this question:
 
@@ -169,7 +61,7 @@ knowledge.
 ---
 
 
-### Step 9 — Ask it to query the knowledge graph for real rows
+### Step 4 — Ask it to query the knowledge graph for real rows
 
 Ask a question that forces the skill to run a SPARQL query against the knowledge graph:
 
@@ -181,7 +73,7 @@ The answer should list number of accounts in each churn risk category.
 ---
 
 
-### Step 10 — Ask question about to get insights about open support cases.
+### Step 5 — Ask question about to get insights about open support cases.
 
 ```text
 How many open support cases are there in each status? Show me the breakdown.
